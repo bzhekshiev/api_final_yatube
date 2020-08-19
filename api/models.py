@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-
 User = get_user_model()
 
 
@@ -34,8 +33,12 @@ class Comment(models.Model):
     created = models.DateTimeField(
         "Дата добавления", auto_now_add=True, db_index=True)
 
+
 class Follow(models.Model):
-    user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
-    following = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='user',
+                             on_delete=models.CASCADE)
+    following = models.ForeignKey(
+        User, related_name='following', on_delete=models.CASCADE)
+
     class Meta():
         unique_together = ('user', 'following',)

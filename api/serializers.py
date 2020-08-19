@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
-from .models import Post, Comment, Group, Follow
+
+from .models import Comment, Follow, Group, Post
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -27,12 +29,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        slug_field='username', read_only=True,
+        default=serializers.CurrentUserDefault())
+    following = serializers.SlugRelatedField(
+        slug_field='username', queryset=User.objects.all())
+
     class Meta:
-            fields = ('user', 'following')
-            model = Follow
-            validators = [
-                UniqueTogetherValidator(
-                    queryset=Follow.objects.all(),
-                    fields=('user', 'following')
-                )
-            ]
+        fields = ('user', 'following')
+        model = Follow
