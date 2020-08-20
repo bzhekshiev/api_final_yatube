@@ -25,7 +25,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     lookup_fields = ('post', 'id')
 
